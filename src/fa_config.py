@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from easydict import EasyDict as edict
-
+import os
 fa_config = edict()
 
 fa_config.base_lr = 0.1
@@ -19,13 +19,10 @@ fa_config.num_class = 5
 fa_config.bn_mom = 0.9
 fa_config.workspace = 256
 fa_config.act_type = 'prelu'
-
-
-fa_config.root_path = '/kyle/workspace/project/face_attributes_prediction'
-fa_config.log_path = fa_config.root_path + '/log/train.log'
+fa_config.root_path = os.getcwd()
 
 #net for train
-fa_config.model_path = fa_config.root_path + '/model/resmobile'
+fa_config.model_path = fa_config.root_path + '/model/eighth_resmobile'
 
 #for load dataset from .rec file
 fa_config.dataset_path =  fa_config.root_path + '/data/'

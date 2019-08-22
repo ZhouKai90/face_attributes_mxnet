@@ -18,20 +18,22 @@ This project is implemented by mxnet and use the custom dataset.
 
 `tools/prepare_dataset.py` is used to convert the pascal VOC format annotation to mxnet  lst file. Subsequently use `mxnet/tools/im2rec.py` create rec dataset.
 
+run `python3 src/fa_train.py` to start training.
+
 ### test
 
 `python unit_test/fa_test.py`
 
 ### Result
 
-2019-08-21 14:17:01,214 INFO "base_module.py" line:565: Epoch[132] Train-Gender=0.999282
-2019-08-21 14:17:01,214 INFO "base_module.py" line:565: Epoch[132] Train-Mask=0.998361
-2019-08-21 14:17:01,214 INFO "base_module.py" line:565: Epoch[132] Train-Glass=0.994949
-2019-08-21 14:17:01,214 INFO "base_module.py" line:565: Epoch[132] Train-MouthOpen=0.997059
-2019-08-21 14:17:01,214 INFO "base_module.py" line:565: Epoch[132] Train-EyesOpen=0.998002
+INFO "base_module.py" line:565: Epoch[299] Train-Gender=0.900570
+INFO "base_module.py" line:565: Epoch[299] Train-Mask=0.985610
+INFO "base_module.py" line:565: Epoch[299] Train-Glass=0.963070
+INFO "base_module.py" line:565: Epoch[299] Train-MouthOpen=0.875516
+INFO "base_module.py" line:565: Epoch[299] Train-EyesOpen=0.909168
 
-2019-08-21 14:17:06,274 INFO "base_module.py" line:585: Epoch[132] Validation-Gender=0.863076
-2019-08-21 14:17:06,274 INFO "base_module.py" line:585: Epoch[132] Validation-Mask=0.982936
-2019-08-21 14:17:06,274 INFO "base_module.py" line:585: Epoch[132] Validation-Glass=0.954564
-2019-08-21 14:17:06,274 INFO "base_module.py" line:585: Epoch[132] Validation-MouthOpen=0.841488
-2019-08-21 14:17:06,274 INFO "base_module.py" line:585: Epoch[132] Validation-EyesOpen=0.902961
+INFO "base_module.py" line:585: Epoch[299] Validation-Gender=0.892064
+INFO "base_module.py" line:585: Epoch[299] Validation-Mask=0.982730
+INFO "base_module.py" line:585: Epoch[299] Validation-Glass=0.958676
+INFO "base_module.py" line:585: Epoch[299] Validation-MouthOpen=0.870477
+INFO "base_module.py" line:585: Epoch[299] Validation-EyesOpen=0.904400

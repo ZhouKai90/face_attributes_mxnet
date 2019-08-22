@@ -5,7 +5,7 @@ import logging
 # import numpy as np
 from fa_dataset import get_dataIter_from_rec
 from fa_config import fa_config as fc
-from fa_mobile_net import get_symbol
+from fa_eighth_mobile_net import get_symbol
 from fa_eval_metric import ClassAccMetric
 
 

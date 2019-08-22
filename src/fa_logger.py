@@ -18,7 +18,7 @@ logger.setLevel(logging.DEBUG)
 
 #the file to write the log info
 s_handle = logging.StreamHandler()
-rf_handle = logging.FileHandler(save_result + '/train.log')
+rf_handle = logging.FileHandler(save_result + '/eighth_resmobile_train.log')
 
 #segment the log file by the max bytes.
 # rf_handle = logging.handlers.RotatingFileHandler(filename = save_result + '/err.log',

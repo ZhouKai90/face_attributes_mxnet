@@ -3,7 +3,7 @@ import os
 import mxnet as mx
 from fa_config import fa_config as fc
 fullcon_output_num = 13
-blocks = [1, 4, 8, 2]
+blocks = [1, 1, 1, 1]
 
 def Act(data, act_type, name):
     # ignore param act_type, set it in this function
@@ -60,24 +60,27 @@ def get_symbol(args):
     data = data - 127.5
     data = data * 0.0078125
 
-    conv_1 = Conv(data, num_filter=64, kernel=(3, 3), pad=(1, 1), stride=(2, 2), name="conv_1")
+    conv_1 = Conv(data, num_filter=4, kernel=(3, 3), pad=(1, 1), stride=(2, 2), name="conv_1")
     if blocks[0] == 1:
-        conv_2_dw = Conv(conv_1, num_group=64, num_filter=64, kernel=(3, 3), pad=(1, 1), stride=(1, 1),
+        conv_2_dw = Conv(conv_1, num_group=4, num_filter=8, kernel=(3, 3), pad=(1, 1), stride=(1, 1),
                          name="conv_2_dw")
     else:
-        conv_2_dw = Residual(conv_1, num_block=blocks[0], num_out=64, kernel=(3, 3), stride=(1, 1), pad=(1, 1),
-                             num_group=64, name="res_2")
-    conv_23 = DResidual(conv_2_dw, num_out=64, kernel=(3, 3), stride=(2, 2), pad=(1, 1), num_group=128, name="dconv_23")
-    conv_3 = Residual(conv_23, num_block=blocks[1], num_out=64, kernel=(3, 3), stride=(1, 1), pad=(1, 1), num_group=128,
+        conv_2_dw = Residual(conv_1, num_block=blocks[0], num_out=4, kernel=(3, 3), stride=(1, 1), pad=(1, 1),
+                             num_group=4, name="res_2")
+    conv_23 = DResidual(conv_2_dw, num_out=8, kernel=(3, 3), stride=(2, 2), pad=(1, 1), num_group=16, name="dconv_23")
+    conv_3 = Residual(conv_23, num_block=blocks[1], num_out=8, kernel=(3, 3), stride=(1, 1), pad=(1, 1), num_group=16,
                       name="res_3")
-    conv_34 = DResidual(conv_3, num_out=128, kernel=(3, 3), stride=(2, 2), pad=(1, 1), num_group=256, name="dconv_34")
-    conv_4 = Residual(conv_34, num_block=blocks[2], num_out=128, kernel=(3, 3), stride=(1, 1), pad=(1, 1),
-                      num_group=256, name="res_4")
-    conv_45 = DResidual(conv_4, num_out=128, kernel=(3, 3), stride=(2, 2), pad=(1, 1), num_group=512, name="dconv_45")
-    conv_5 = Residual(conv_45, num_block=blocks[3], num_out=128, kernel=(3, 3), stride=(1, 1), pad=(1, 1),
-                      num_group=256, name="res_5")
-    conv_6_sep = Conv(conv_5, num_filter=512, kernel=(1, 1), pad=(0, 0), stride=(1, 1), name="conv_6sep")
-    conv_6_dw = Linear(conv_6_sep, num_filter=512, num_group=512, kernel=(7, 7), pad=(0, 0), stride=(1, 1), name="conv_6dw7_7")
+    conv_34 = DResidual(conv_3, num_out=16, kernel=(3, 3), stride=(2, 2), pad=(1, 1), num_group=32, name="dconv_34")
+    conv_4 = Residual(conv_34, num_block=blocks[2], num_out=16, kernel=(3, 3), stride=(1, 1), pad=(1, 1),
+                      num_group=32, name="res_4")
+    conv_45 = DResidual(conv_4, num_out=16, kernel=(3, 3), stride=(2, 2), pad=(1, 1), num_group=64, name="dconv_45")
+    conv_5 = Residual(conv_45, num_block=blocks[3], num_out=16, kernel=(3, 3), stride=(1, 1), pad=(1, 1),
+                      num_group=32, name="res_5")
+    conv_6_sep = Conv(conv_5, num_filter=64, kernel=(1, 1), pad=(0, 0), stride=(1, 1), name="conv_6sep")
+
+    conv_6_dw = Linear(conv_6_sep, num_filter=64, num_group=64, kernel=(7, 7), pad=(0, 0),
+					   stride=(1, 1), name="conv_6dw7_7")
+
     conv_6_f = mx.sym.FullyConnected(data=conv_6_dw, num_hidden=fullcon_output_num, name='pre_fc1')
     fc1 = mx.sym.BatchNorm(data=conv_6_f, fix_gamma=True, eps=2e-5, momentum=fc.bn_mom, name='fc1')
 
@@ -115,9 +118,3 @@ def get_symbol(args):
     outs = [gender_softmax, mask_softmax, glass_softmax, mouth_softmax, eye_softmax]
     outs.append(mx.sym.BlockGrad(fc1))
     return mx.symbol.Group(outs)
-
-if __name__ == '__main__':
-    sym = get_symbol()
-    allLayers = sym.get_internals()
-    print(allLayers)
-    mx.viz.plot_network(symbol = sym)
