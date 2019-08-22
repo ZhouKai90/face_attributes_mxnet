@@ -83,5 +83,5 @@ if __name__ == '__main__':
     parser.add_argument('image_path', help='path of image to test.')
     args = parser.parse_args()
 
-    test_model_path = '/kyle/workspace/project/face_attributes_prediction/model/resmobile'
+    test_model_path = os.getcwd() + '/model/eighth_resmobile'
     test(path=args.image_path, module_path=test_model_path)
