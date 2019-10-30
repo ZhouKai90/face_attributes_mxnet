@@ -12,6 +12,8 @@ MouthOpen (0:no, 1:yes, 2:indeterminacy)),
 
 EyesClose (0:no, 1:yes, 2:indeterminacy))
 
+![](https://github.com/ZhouKai90/face_attributes_mxnet/blob/master/images/9.jpg)
+
 ### Train
 
 This project is implemented by mxnet and use the custom dataset.
@@ -21,8 +23,9 @@ This project is implemented by mxnet and use the custom dataset.
 run `python3 train/fa_train.py` to start training.
 
 ### test
+`make all` for compile rcnn 
 
-`python demo/fa_test.py`
+run `python demo/fa_test.py images` 
 
 ### Result
 
