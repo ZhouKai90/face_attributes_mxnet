@@ -1,6 +1,6 @@
 # face_attributes_mxnet
 
-### Five face attributes predication for a single face image.
+### MobileNet for Five face attributes predication, the model no more than 70K.
 
 Gender (0:woman, 1:man)  
 
